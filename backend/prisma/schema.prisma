@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String         @id @default(uuid())
+  name         String
+  email        String         @unique
+  password     String
+  gender       String
+  birth        DateTime
+  city         String
+  state        String
+  country      String         @default("Brasil")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Inscriptions Inscriptions[]
+  Team         Team[]
+  TeamMembers  TeamMembers[]
+}
+
+model Categories {
+  id         Int          @id @default(autoincrement())
+  name       String
+  maxAge     Int
+  minAge     Int
+  gender     String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Tournament Tournament[]
+}
+
+model Modalities {
+  id         Int          @id @default(autoincrement())
+  name       String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Tournament Tournament[]
+}
+
+model Tournament {
+  id               String         @id @default(uuid())
+  name             String
+  description      String
+  inscriptionStart DateTime
+  inscriptionEnd   DateTime
+  start            DateTime
+  end              DateTime
+  city             String
+  state            String
+  country          String         @default("Brasil")
+  spots            Int
+  categoryId       Int
+  category         Categories     @relation(fields: [categoryId], references: [id])
+  modalityId       Int
+  modality         Modalities     @relation(fields: [modalityId], references: [id])
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  Inscriptions     Inscriptions[]
+  Team             Team[]
+}
+
+model Team {
+  id             String        @id @default(uuid())
+  name           String
+  responsable_id String
+  responsable    User          @relation(fields: [responsable_id], references: [id])
+  tournamentId   String
+  tournament     Tournament    @relation(fields: [tournamentId], references: [id])
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  TeamMembers    TeamMembers[]
+}
+
+model TeamMembers {
+  id        String   @id @default(uuid())
+  teamId    String
+  userId    String
+  team      Team     @relation(fields: [teamId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  type      String   @default("player")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Inscriptions {
+  id           String     @id @default(uuid())
+  teamId       String
+  tournamentId String
+  team         User       @relation(fields: [teamId], references: [id])
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
