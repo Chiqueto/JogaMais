@@ -8,7 +8,6 @@ userRoutes.post("/",  userController.createUser);
 userRoutes.get("/", authMiddleware, userController.getAllUsers);
 userRoutes.get("/:id", authMiddleware, userController.getUserById);
 userRoutes.put("/:id", authMiddleware, userController.updateUser);
-
 //Login
 userRoutes.post("/login", userController.login);
 

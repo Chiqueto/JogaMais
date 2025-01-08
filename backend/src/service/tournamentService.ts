@@ -8,25 +8,25 @@ import { verify } from 'crypto';
 const prisma = new PrismaClient();
 
 
-export const userService = {
-    verifyEmail: async (email: string) => {
-        const user = await prisma.user.findUnique({
-            where: {
-                email
-            }
-        })
-
-        return user;
-    },
-
-    verifyUser: async (id: string) => {
-        const user = await prisma.user.findUnique({
+export const tournamentService = {
+    verifyCategory: async (id: number) => {
+        const category = await prisma.categories.findUnique({
             where: {
                 id
             }
         })
 
-        return user;
+        return category;
+    },
+
+    verifyModality: async (id: number) => {
+        const modality = await prisma.modalities.findUnique({
+            where: {
+                id
+            }
+        })
+
+        return modality;
     }
 }
 

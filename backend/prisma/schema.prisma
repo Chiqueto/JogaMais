@@ -23,19 +23,20 @@ model User {
   birth        DateTime
   city         String
   state        String
-  country      String         @default("BRA")
+  country      String         @default("Brasil")
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   Inscriptions Inscriptions[]
   Team         Team[]
   TeamMembers  TeamMembers[]
+  Tournament   Tournament[]
 }
 
 model Categories {
   id         Int          @id @default(autoincrement())
   name       String
   maxAge     Int
-  minAge     Int
+  minAge     Int?
   gender     String
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
@@ -52,20 +53,23 @@ model Modalities {
 
 model Tournament {
   id               String         @id @default(uuid())
+  ownerId          String
+  owner            User           @relation(fields: [ownerId], references: [id])
   name             String
-  description      String
+  description      String?
   inscriptionStart DateTime
   inscriptionEnd   DateTime
   start            DateTime
   end              DateTime
   city             String
   state            String
-  country          String         @default("BRA")
+  country          String         @default("Brasil")
   spots            Int
   categoryId       Int
   category         Categories     @relation(fields: [categoryId], references: [id])
   modalityId       Int
   modality         Modalities     @relation(fields: [modalityId], references: [id])
+  rules            String?
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
   Inscriptions     Inscriptions[]
