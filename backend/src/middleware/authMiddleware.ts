@@ -7,7 +7,6 @@ dotenv.config();
 const SECRET_KEY = String(process.env.SECRET_KEY); // Substitua pela sua chave secreta real
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  console.log(`entrou`)
   const authHeader = req.headers['authorization'];
 
   if (!authHeader) {

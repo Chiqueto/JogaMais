@@ -119,12 +119,27 @@ const userController = {
             country: z.string().min(1, "País não pode estar vazio")
         })
 
+        
+
         const validationResult = updateUserSchema.safeParse({...req.body, id});
+
+        const userExists = await prisma.user.findUnique({
+            where: {
+                id
+            }
+        });
+
+        if(!userExists){
+            res.status(404).json({error: 'Usuário não encontrado'});
+            return;
+        }
 
         if(!validationResult.success){
             res.status(400).json({error: validationResult.error});
             return;
         }
+        
+        
 
         const {name, email, gender, birth, city, state, country} = validationResult.data;
 
@@ -145,12 +160,12 @@ const userController = {
                 }
             })
 
-            if(!user){
-                res.status(404).json({error: 'Usuário não encontrado'});
+            if(!user ){
+                res.status(400).json({error: 'Erro ao atualizar usuário'});
                 return;
             }
 
-            res.status(200).json({message: 'Usuário atualizado com sucesso', email: user.email});
+            res.status(200).json({message: 'Usuário atualizado com sucesso'});
         }catch(error: any){
             res.status(500).json({error: 'Erro interno do servidor' + error.message});
         }
@@ -190,7 +205,7 @@ const userController = {
 
             const token = jwt.sign({id: user.id, email: user.email}, JWT_SECRET, {expiresIn: JWT_EXPIRATION})
 
-            res.status(201).json({message: "Login realizado com sucesso!", token})
+            res.status(201).json({message: "Login realizado com sucesso!", token, user})
         }catch(error: any){
             res.status(500).json({error: "Erro interno do servidor: " + error.message})
         }
