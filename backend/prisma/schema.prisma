@@ -23,7 +23,7 @@ model User {
   birth        DateTime
   city         String
   state        String
-  country      String         @default("Brasil")
+  country      String         @default("BRA")
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   Inscriptions Inscriptions[]
@@ -60,7 +60,7 @@ model Tournament {
   end              DateTime
   city             String
   state            String
-  country          String         @default("Brasil")
+  country          String         @default("BRA")
   spots            Int
   categoryId       Int
   category         Categories     @relation(fields: [categoryId], references: [id])
@@ -90,7 +90,7 @@ model TeamMembers {
   userId    String
   team      Team     @relation(fields: [teamId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
-  type      String   @default("player")
+  type      String   @default("jogador")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
