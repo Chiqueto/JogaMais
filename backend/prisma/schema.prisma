@@ -70,6 +70,7 @@ model Tournament {
   modalityId       Int
   modality         Modalities     @relation(fields: [modalityId], references: [id])
   rules            String?
+  isFinished       Boolean        @default(false)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
   Inscriptions     Inscriptions[]

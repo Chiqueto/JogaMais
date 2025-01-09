@@ -8,6 +8,7 @@ describe('Create Tournament Controller', () => {
 
     beforeAll(async () => {
         // Limpar banco e criar um usuário para testes
+        await prisma.tournament.deleteMany();
         await prisma.user.deleteMany();
         const user = await request(app)
             .post('/users') // Substitua pela rota de criação de usuário
@@ -183,3 +184,5 @@ describe('Create Tournament Controller', () => {
         expect(response.body).toHaveProperty('error');
     });
 });
+
+
