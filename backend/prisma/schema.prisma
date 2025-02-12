@@ -96,6 +96,7 @@ model TeamMembers {
   team      Team     @relation(fields: [teamId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
   type      String   @default("jogador")
+  fg_active Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
