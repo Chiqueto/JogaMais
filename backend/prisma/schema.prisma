@@ -24,6 +24,7 @@ model User {
   city         String
   state        String
   country      String         @default("Brasil")
+  cep          String         @default("00000-000") @db.VarChar(9)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   Inscriptions Inscriptions[]

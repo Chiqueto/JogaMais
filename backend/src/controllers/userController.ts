@@ -19,7 +19,9 @@ const userController = {
             birth: z.string().refine((date) => !isNaN(Date.parse(date)), {message: "Data de nascimento inválida, use o formato YYYY-MM-DD"}),
             city: z.string().min(1, "Cidade não pode estar vazia"),
             state: z.string().min(1, "Estado não pode estar vazio"),
-            country: z.string().min(1, "País não pode estar vazio")
+            country: z.string().min(1, "País não pode estar vazio"),
+            cep: z.string().min(9, "Cep deve estar no formato 00000-000").refine((cep) => cep.match(/^\d{5}-\d{3}$/), {message: "Cep deve estar no formato 00000-000"})
+
         })
         const validationResult = createUserSchema.safeParse(req.body) ;
     
@@ -33,7 +35,7 @@ const userController = {
             return;
         }
     
-        const {name, email, password, gender, birth, city, state, country} = validationResult.data;
+        const {name, email, password, gender, birth, city, state, country, cep} = validationResult.data;
     
         
         try{
@@ -48,7 +50,8 @@ const userController = {
                     birth: new Date(birth),
                     city,
                     state,
-                    country
+                    country,
+                    cep
                 }
             })
 
@@ -116,7 +119,8 @@ const userController = {
             birth: z.string().refine((date) => !isNaN(Date.parse(date)), {message: "Data de nascimento inválida, use o formato YYYY-MM-DD"}),
             city: z.string().min(1, "Cidade não pode estar vazia"),
             state: z.string().min(1, "Estado não pode estar vazio"),
-            country: z.string().min(1, "País não pode estar vazio")
+            country: z.string().min(1, "País não pode estar vazio"),
+            cep: z.string().min(9, "Cep deve estar no formato 00000-000").refine((cep) => cep.match(/^\d{5}-\d{3}$/), {message: "Cep deve estar no formato 00000-000"})
         })
 
         
@@ -141,7 +145,7 @@ const userController = {
         
         
 
-        const {name, email, gender, birth, city, state, country} = validationResult.data;
+        const {name, email, gender, birth, city, state, country, cep} = validationResult.data;
 
         try{
             const user = await prisma.user.update({
@@ -155,8 +159,8 @@ const userController = {
                     birth: new Date(birth),
                     city,
                     state,
-                    country
-
+                    country,
+                    cep
                 }
             })
 
