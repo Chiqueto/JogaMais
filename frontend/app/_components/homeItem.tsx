@@ -9,7 +9,11 @@ interface HomeItemProps {
 
 function homeItem({ image_url, image_alt, text }: HomeItemProps) {
     return (
-        <CarouselItem className="flex flex-col items-center justify-center"><p className="text-2xl text-center">{text}</p><Image src={image_url} alt={image_alt} width={320} height={320} /></CarouselItem>
+        <CarouselItem className="flex flex-col justify-center items-center flex-wrap mt-8 w-full gap-6">
+            <p className="text-2xl text-center max-w-[360px] ">{text}</p>
+            <Image src={image_url} alt={image_alt} width={320} height={320} />
+        </CarouselItem>
+
     );
 }
 

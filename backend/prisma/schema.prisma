@@ -11,7 +11,6 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -19,7 +18,7 @@ model User {
   name         String
   email        String         @unique
   password     String
-  gender       String
+  gender       Gender         
   birth        DateTime
   city         String
   state        String
@@ -110,4 +109,10 @@ model Inscriptions {
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+}
+
+
+enum Gender {
+  M
+  F
 }
